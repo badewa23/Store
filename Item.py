@@ -1,8 +1,12 @@
 class Item:
     
-    def __init__(self, item_name: str, available: int) -> None:
+    def __init__(self, item_name: str, price: float, available: int) -> None:
         self.name = item_name.capitalize()
+        self.price = price
         self.qty = available
+        
+    def get_item_name(self) -> str:
+        return self.name
     
     def restock(self, added_qty: int) -> int:
         self.qty += added_qty
