@@ -1,3 +1,4 @@
+from Person import Person
 from User import User
 from Admin import Admin
 from Account import Account
@@ -9,6 +10,7 @@ class Store:
         self.name: str = name.title()
         self.inventory: list = list()
         self.accounts: list = list()
+        self.persons: list = list()
     
     def item_name_exist(self, item_name: str) -> bool:
         for item in self.inventory:
@@ -36,30 +38,68 @@ class Store:
                 return True
         return False
     
-    def create_user(self, username: str, password: str, name: str, age: int) -> User:
+    def check_if_pesron_exist(self, name:str) -> Person:
+        name = name.title()
+        for person in self.persons:
+            if person.get_name() == name:
+                return person
+        return None
+    
+    def create_account_from_person(self, username:str, password:str, privilege: bool, name: str) -> Account:
+        account: Account
+        person: Person = self.check_if_pesron_exist(name)
+        if person is not None:
+            if privilege:
+                account = self.create_admin(username, password,name)
+            else:
+                account = self.create_user(username, password,name)
+            if account is not None:
+                person.add_account(account)
+            return account
+        return None
+    
+    def create_account(self, username: str, password: str, privilege: bool, name: str, age:int) -> Account:
+        account: Account
+        person = Person(name, age)
+        if privilege:
+            account = self.create_admin(username, password, name)
+        else:
+            account = self.create_user(username, password, name)
+        if account is not None:
+                person.add_account(account)
+        self.persons.append(person)
+        return account
+    
+    
+    def create_user(self, username: str, password: str, name) -> User:
         if self.username_exist(username):
             return None
-        user: User = User(username,password,name,age)
+        user: User = User(username,password, name)
         self.accounts.append(user)
         return self.accounts[-1]
     
-    def delete_user(self, user: User) -> bool:
+    def create_admin(self, username: str, password: str, name: str) -> Admin:
+        if self.username_exist(username):
+            return None
+        admin: Admin = Admin(username,password, name)
+        self.accounts.append(admin)
+        return self.accounts[-1]
+    
+    def delete_account(self, account: Account) -> bool:
         try:
-            self.accounts.remove(user)
+            self.accounts.remove(account)
+            person = self.check_if_pesron_exist(account.name)
+            person.delete_account(account) 
             return True
         except:
             return False
     
-    def create_admin(self, username: str, password: str, name: str, age: int) -> Admin:
-        if self.username_exist(username):
-            return None
-        admin: Admin = Admin(username,password,name,age)
-        self.accounts.append(admin)
-        return self.accounts[-1]
-    
-    def delete_admin(self, admin: Admin) -> bool:
+    def delete_person(self, person: Person) -> bool:
         try:
-            self.accounts.remove(admin)
+            self.persons.remove(person)
+            accounts = person.accounts
+            for account in accounts:
+                self.delete_account(account)
             return True
         except:
             return False
@@ -69,26 +109,23 @@ class Store:
             if account.validate(username, password):
                 return account
         return None
-
+        
     
-    def change_user_to_admin(self, username: str) -> Admin:
-        index: int
-        for num in range(len(self.accounts)):
-            account = self.accounts[num]
-            if username == account.get_username():
-                index = num
-        user: User = self.accounts[index]
-        info: tuple = user.get_info()
-        username: str = info[0]
-        password: str = info[1]
-        name: str = info[2]
-        age: int = info[3]
-        admin: Admin = Admin(username,password,name,age)
-        self.accounts[index] = admin
-        return self.accounts[index]
+    def change_user_to_admin(self, user: User) -> Admin:
+        self.delete_account(user)
+        username = user.username
+        username: str = user.username
+        password: str = user.password
+        person_name: str = user.name
+        admin: Admin = Admin(username,password,person_name)
+        self.accounts.append(admin)
+        person: Person = self.check_if_pesron_exist(admin.name)
+        person.add_account(admin)
+        return self.accounts[-1]
     
     def change_name(self, name: str) -> None:
         self.name = name.title()
+        
         
         
     
