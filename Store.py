@@ -3,14 +3,16 @@ from User import User
 from Admin import Admin
 from Account import Account
 from Item import Item
+from Control import Control
 
 class Store:
 
     def __init__(self, name: str):
+        self.control: Control = Control()
         self.name: str = name.title()
-        self.inventory: list = list()
-        self.accounts: list = list()
-        self.persons: list = list()
+        self.inventory: list[Item] = list()
+        self.accounts: list[Account] = list()
+        self.persons: list[Person] = list()
     
     def item_name_exist(self, item_name: str) -> bool:
         for item in self.inventory:
@@ -23,6 +25,7 @@ class Store:
             return None
         item = Item(item_name, price, in_stock)
         self.inventory.append(item)
+        self.control.insert_data_to_items_collection(item.get_dictionary_info())
         return self.inventory[-1]
     
     def remove_item(self, item: Item) -> bool:
@@ -45,6 +48,12 @@ class Store:
                 return person
         return None
     
+    def create_person(self, name:str, age: int) -> Person:
+        person: Person = Person(name, age)
+        self.persons.append(person)
+        self.control.insert_data_to_persons_collection(person.get_dictionary_info())
+        return self.persons[-1]
+    
     def create_account_from_person(self, username:str, password:str, privilege: bool, name: str) -> Account:
         account: Account
         person: Person = self.check_if_pesron_exist(name)
@@ -55,19 +64,20 @@ class Store:
                 account = self.create_user(username, password,name)
             if account is not None:
                 person.add_account(account)
+                self.control.insert_data_to_accounts_collection(account.get_dictionary_info())
             return account
         return None
     
     def create_account(self, username: str, password: str, privilege: bool, name: str, age:int) -> Account:
         account: Account
-        person = Person(name, age)
         if privilege:
             account = self.create_admin(username, password, name)
         else:
             account = self.create_user(username, password, name)
         if account is not None:
-                person.add_account(account)
-        self.persons.append(person)
+            person = self.create_person(name, age)
+            person.add_account(account)
+            self.control.insert_data_to_accounts_collection(account.get_dictionary_info())
         return account
     
     
@@ -121,6 +131,7 @@ class Store:
         self.accounts.append(admin)
         person: Person = self.check_if_pesron_exist(admin.name)
         person.add_account(admin)
+        self.control.update_data_to_account(admin.query_on_username, {"$set":{"Access":admin.access}})
         return self.accounts[-1]
     
     def change_name(self, name: str) -> None:

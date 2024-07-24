@@ -15,3 +15,6 @@ class Item:
     def change_name(self, new_item_name: str) -> str:
         self.name = new_item_name.capitalize()
         return self.name
+    
+    def get_dictionary_info(self):
+            return {"Item_name":self.name, "Price": self.price, "In_stock": self.qty}

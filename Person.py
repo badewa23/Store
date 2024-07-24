@@ -23,4 +23,10 @@ class Person:
         return self.name
     
     def add_salary(self, ammount: float) -> None:
-        self.ammount = float(ammount)
+        self.salary = float(ammount)
+    
+    def get_dictionary_info(self):
+        try:
+            return {"Name":self.name, "Age": self.age, "Salary": self.salary}
+        except:
+            return {"Name":self.name, "Age": self.age}
