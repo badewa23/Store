@@ -1,7 +1,7 @@
-from Person import Person as P
-from User import User as U
-from Admin import Admin as A
-from Item import Item as I
-from Store import Store as S
+from Control import Control
 
-store: S = S("General")
+class Menu:
+    CONTROL: Control = Control()
+    
+    def __init__(self, object: object):
+        self.object = object

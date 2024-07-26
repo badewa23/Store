@@ -104,16 +104,6 @@ class Store:
         except:
             return False
     
-    def delete_person(self, person: Person) -> bool:
-        try:
-            self.persons.remove(person)
-            accounts = person.accounts
-            for account in accounts:
-                self.delete_account(account)
-            return True
-        except:
-            return False
-    
     def validate_login(self, username:str, password:str) -> Account:
         for account in self.accounts:
             if account.validate(username, password):
