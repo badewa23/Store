@@ -1,5 +1,5 @@
 [
-    {"itemName": "Beer","description": "A beverage to get you drunk", "price":10.11, "inStock":100, "ageRestrictions": 21},
-    {"itemName": "Candy","description": "So sweet you cant resist", "price":1.00, "inStock":500},
-    {"itemName": "Cigarette","description": "Smoke to help you relax", "price":0.50, "inStock":50, "ageRestrictions": 18}
+    {"itemName": "Beer","description": "A beverage to get you drunk", "price":10.11, "inStock":100, "plural":"Beers", "ageRestrictions": 21},
+    {"itemName": "Candy","description": "So sweet you cant resist", "price":1.00, "inStock":500, "plural":"Candies"},
+    {"itemName": "Cigarette","description": "Smoke to help you relax", "price":0.50, "inStock":50,"plural":"Cigarettes", "ageRestrictions": 18}
 ]
