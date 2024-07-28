@@ -52,19 +52,29 @@ class Control:
             accounts_data = json.load(f)
         self.database.accounts.insert_many(accounts_data)
         
-    def insert_data_to_persons_collection(self, person_info: dict):
+    def insert_data_to_persons_collection(self, person_info: dict) -> bool:
         self.LOG.add_logging_info("Add a Person Collection into Persons Collection")
         try:
-            self.database.persons.insert_one(person_info)
+            result = self.database.persons.insert_one(person_info)
+            id = result.inserted_id
+            if id is None:
+                return False
+            return True
         except:
             self.LOG.add_logging_error("Fail to add Person to Persons Collection")
+            return False
     
     def insert_data_to_items_collection(self, item_info: dict):
         self.LOG.add_logging_info("Add an Item into Items Collection")
         try:
-            self.database.items.insert_one(item_info)
+            result = self.database.items.insert_one(item_info)
+            id = result.inserted_id
+            if id is None:
+                return False
+            return True
         except:
             self.LOG.add_logging_error("Fail to add Item to Items Collection")
+            return False
     
     def insert_data_to_accounts_collection(self, account_info: dict):
         self.LOG.add_logging_info("Add an Account  into Accounts Collection")
@@ -80,19 +90,23 @@ class Control:
         except:
             self.LOG.add_logging_error("Fail to add Order to Order Collection")
     
-    def update_data_to_account(self, query: dict, set: dict):
+    def update_data_to_account(self, query: dict, set: dict) -> bool:
         self.LOG.add_logging_info("Updating an Account Document")
         try:
-            self.database.accounts.update_one(query, set)
+            reslut = self.database.accounts.update_one(query, set)
+            return reslut.matched_count == 1 and reslut.modified_count == 1
         except:
             self.LOG.add_logging_error("Fail to update Account Document")
+            return False
     
     def update_data_to_item(self, query: dict, set: dict):
         self.LOG.add_logging_info("Updating an Item Document")
         try:
-            self.database.items.update_one(query, set)
+            reslut = self.database.items.update_one(query, set)
+            return reslut.matched_count == 1 and reslut.modified_count == 1
         except:
             self.LOG.add_logging_error("Fail to update Item Document")
+            return False
     
     def get_accounts(self):
         self.LOG.add_logging_info("Getting Accounts Collection's Documents")
@@ -122,6 +136,23 @@ class Control:
             return self.database.orders.find({},{"name":1,"items":1,"_id":0})
         except:
             self.LOG.add_logging_error("Fail to get Orders Collection's Documents")
+    
+    def delete_account(self, query: dict) -> int:
+        self.LOG.add_logging_info("Deleting an Account Collection's Documents")
+        try:
+            result = self.database.accounts.delete_one(query)
+            return result.deleted_count
+        except:
+            self.LOG.add_logging_error("Fail to delete Account Collection's Documents")
+    
+    def delete_item(self, query: dict) -> int:
+        self.LOG.add_logging_info("Deleting an Item Collection's Documents")
+        try:
+            result = self.database.items.delete_one(query)
+            return result.deleted_count
+        except:
+            self.LOG.add_logging_error("Fail to Item Account Collection's Documents")
+            
     
     def clear(self):
         # for windows

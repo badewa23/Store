@@ -7,8 +7,11 @@ class Order:
     def add_item(self, checkout_item):
         self.checkout_items.append(checkout_item)
     
-    def add_list(self, checkout_items: list[CheckoutItem] ):
+    def add_checkout_item_list(self, checkout_items: list[CheckoutItem] ):
         self.checkout_items: list[CheckoutItem] = checkout_items
+    
+    def add_dict_list(self, ditc_list: list[dict]):
+        self.dict_items = ditc_list
     
     def get_dictionary_info(self):
         items: list[dict] = list()

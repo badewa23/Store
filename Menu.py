@@ -16,14 +16,14 @@ class Menu:
         orders = self.CONTROL.get_orders()
         self.orders: list[Order] = list()
         for order in orders:
-            a_order = self.create_order(a_order)
+            a_order = self.create_order(order)
             self.orders.append(a_order)
     
     def create_order(self, orders: dict) -> Order:
         name = orders["name"]
         items = orders["items"]
         order: Order = Order(name)
-        order.add_list(items)
+        order.add_dict_list(items)
         return order
     
     def get_persons(self):

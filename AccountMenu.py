@@ -3,7 +3,6 @@ from UserMenu import UserMenu
 from AdminMenu import AdminMenu
 from Account import Account
 from Person import Person
-from Item import Item
 
 class AccountMenu(Menu):
     
@@ -11,13 +10,17 @@ class AccountMenu(Menu):
         super().__init__(None,account,person)
     
     def display(self) -> int:
-        choice: str = self.account.display()
+        choice: str = self.account.display(self.CONTROL.clear)
         self.CONTROL.clear()
         while True:
             match choice:
                 case "U":
                     user_menu = UserMenu(self.account,self.person)
                     status = user_menu.display()
+                    if status == 2:
+                        self.CONTROL.clear()
+                        choice: str = self.account.display(self.CONTROL.clear)
+                        continue
                     return status
                 case "G":
                     return 0
@@ -26,11 +29,9 @@ class AccountMenu(Menu):
                     status = admin_menu.display()
                     if status == 0:
                         self.CONTROL.clear()
-                        choice: str = self.account.display()
+                        choice: str = self.account.display(self.CONTROL.clear)
+                        self.CONTROL.clear()
                         continue
                     return status
                 case "E": 
                     return 1
-            
-    def admin_panel(self):
-        pass

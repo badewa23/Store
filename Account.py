@@ -13,7 +13,7 @@ class Account():
     def validate(self, username: str, password: str) -> bool:
         return username == self.username and password == self.password
     
-    def display(self):
+    def display(self, clear):
         while True:
             print(f"Hello {self.get_username()}")
             selection: str =""
@@ -21,7 +21,7 @@ class Account():
                 print("[A]dmin Panel\n[U]ser Panel\n[G]o Back\n[E]xit")
                 selection = input()
                 if selection not in "AUGE" or len(selection) != 1:
-                    self.CONTROL.clear()
+                    clear()
                     print("Wrong input please try again\n")
                     continue
                 return selection
@@ -34,3 +34,6 @@ class Account():
             
     def query_on_username(self) -> dict:
         return {"username":self.username}
+    
+    def new_access_update(self, new_access: str) -> dict:
+        return {"$set": {"access": new_access}}

@@ -39,6 +39,8 @@ class UserMenu(Menu):
                         continue
                     return status
                 case "G":
+                    if self.account.access == "Admin":
+                        return 2
                     return 0
                 case "E": 
                     return 1
@@ -56,7 +58,7 @@ class UserMenu(Menu):
                 print(line)
                 total += checkout_item.get_total()
                 count += 1
-            selection = input("[C]heckout\n[R]emove (item name opt:ammount)\n[G]o Back\n[E]xit\n")
+            selection = input("[C]heckout\n[R]emove (item opt:ammount)\n[G]o Back\n[E]xit\n")
             if selection in "CGE" and len(selection) == 1:
                 match selection:
                     case "C":
@@ -123,6 +125,7 @@ class UserMenu(Menu):
                     continue
             self.CONTROL.clear()
             print("Wrong input please try again\n")
+            continue
     
     def browse_item_panel(self) -> int:
         while True:
@@ -132,7 +135,7 @@ class UserMenu(Menu):
                 line = item.__str__() + " [" + str(count) + "]"
                 print(line)
                 count += 1
-            selection = input("[B]uy (item name ammount)\n[G]o Back\n[E]xit\n")
+            selection = input("[B]uy (item ammount)\n[G]o Back\n[E]xit\n")
             if selection in "GE" and len(selection) == 1:
                 match selection:
                     case "G":
@@ -195,10 +198,11 @@ class UserMenu(Menu):
                     continue
             self.CONTROL.clear()
             print("Wrong input please try again\n")
+            continue
     
     def create_order(self):
         self.order: Order = Order(self.person.name)
-        self.order.add_list(self.checkout_items)
+        self.order.add_checkout_item_list(self.checkout_items)
     
     def check_if_checkout_item_exist(self, item_name):
         for checkout_item in self.checkout_items:

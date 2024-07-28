@@ -93,10 +93,12 @@ class StoreMenu(Menu):
                     self.CONTROL.clear()
                     return
                 if any(i.isdigit() for i in name):
+                    self.CONTROL.clear()
                     print("Please Only Input in Alphabet\n")
                     continue
                 else:
                     if len(name.split()) > 2 or len(name.split()) < 2:
+                        self.CONTROL.clear()
                         print("Please Only Input A First Name And Last Name\n")
                         continue
                 break
@@ -110,17 +112,17 @@ class StoreMenu(Menu):
                 return (Account(username, passowrd, self.accesses[0], person.name), person, 0)
             age: str = input("Age: ")
             if age == "G":
-                    self.CONTROL.clear()
-                    return 0
+                self.CONTROL.clear()
+                return 0
             if age.isdigit():
                 age: int = int(age)
             else:
+                self.CONTROL.clear()
                 print("Please Only Input Digit\n")
-                print()
                 continue
             return (Account(username, passowrd, self.accesses[0], name), Person(name,age), 1)
             
-    def validate_login(self, username:str, password:str) -> Account:
+    def validate_login(self, username:str, password:str) -> Account | None:
         for account in self.accounts:
             if account.validate(username, password):
                 return account
@@ -139,7 +141,7 @@ class StoreMenu(Menu):
                 return True
         return False
     
-    def check_if_pesron_exist(self, name:str) -> Person:
+    def check_if_pesron_exist(self, name:str) -> Person | None:
         name = name.title()
         for person in self.persons:
             if person.name == name:
