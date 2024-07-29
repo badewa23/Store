@@ -25,6 +25,7 @@ class AccountMenu(Menu):
                 case "G":
                     return 0
                 case "A":
+                    self.CONTROL.clear()
                     admin_menu = AdminMenu(self.account,self.person)
                     status = admin_menu.display()
                     if status == 0:

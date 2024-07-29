@@ -3,9 +3,9 @@ from CheckoutItem import CheckoutItem
 class Item:
     
     def __init__(self, item_name: str, price: float, available: int, description: str, plural:str, 
-                 ageRestrictions: int = None):
+                 ageRestrictions: int = -1):
         self.name = item_name.title()
-        self.plural = plural
+        self.plural = plural.title()
         self.price = price
         self.description = description.capitalize()
         self.ageRestrictions = ageRestrictions
@@ -35,7 +35,7 @@ class Item:
         return self.name
     
     def get_dictionary_info(self):
-        if  self.ageRestrictions is None:
+        if  self.ageRestrictions == -1:
             return {"itemName":self.name,"description":self.description, "price": self.price,
                     "inStock": self.qty, "plural": self.plural}
         return {"itemName":self.name,"description":self.description, "price": self.price,
@@ -45,4 +45,4 @@ class Item:
         return {"itemName":self.name}
     
     def __str__(self) -> str:
-        return f"{self.name}    {self.description}  $%.2f" %self.price
+        return f"{self.name:<24}{self.description:<35}${self.price:<6.2f}"

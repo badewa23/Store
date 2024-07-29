@@ -79,9 +79,10 @@ class AdminMenu(Menu):
                     stat.assign_unit(unit)
                     stat_list.append(stat)
             self.stat_list = stat_list
-        print("Store Stat\nItem     Unit Sold")
+        text = "Item"
+        print(f"Store Stat\n{text:<25}Unit Sold")
         for stat in self.stat_list:
-            print(f"{stat.item_name}    {stat.unit}")
+            print(f"{stat.item_name:<25}{stat.unit}")
         input(":")  
         return
         
@@ -202,10 +203,11 @@ class AdminMenu(Menu):
             input(":")
             self.CONTROL.clear()
             return
-        print(f"{stat.name} Stat\nItem      Purchases")
+        text: str = "Item"
+        print(f"{stat.name} Stat\n{text:<25}Purchases")
         for key in stat.items:
             unit = stat.items[key]
-            print(f"{key}       {unit}")
+            print(f"{key:<25}{unit}")
         input(":")
         self.CONTROL.clear()
         return
@@ -213,9 +215,12 @@ class AdminMenu(Menu):
     def person_panel(self):
         while True:
             num: int =0
-            print("Name         Age")
+            text = "Name"
+            text2 = "Age"
+            print(f"{text:<23}{text2:<5}Choice")
             for person in self.persons:
-                print(f"{person.name}       {person.age} [{num}]")
+                num_text = f"[{num}]"
+                print(f"{person.name:<23}{person.age:<5}{num_text:^6}")
                 num += 1
             selection = input("[A]dd Person\nPerson [S]tatistics (person)\n[G]o Back\n[E]xit\n")
             if selection in "AGE" and len(selection) == 1:
@@ -266,13 +271,15 @@ class AdminMenu(Menu):
             return
         accesses: list[str] = ["Admin","User"]
         while True:
-            print(f"{account.name} has {account.access} access")
-            print("Access Type")
+            print(f"{account.username} has {account.access} access")
+            text = "Access Type"
+            print(f"{text:<15}Choice")
             num: int = 0
             for access in accesses:
-                print(f"{access} [{num}]")
+                num_text = f"[{num}]"
+                print(f"{access:<15}{num_text:^6}")
                 num += 1
-            choice = input("New Access [G]o Back:\n")
+            choice = input("New Access [G]o Back: ")
             if choice == "G":
                 self.CONTROL.clear()
                 return
@@ -311,9 +318,13 @@ class AdminMenu(Menu):
     def account_panel(self):
         while True:
             num: int =0
-            print("Username         Person")
+            text = "Username"
+            text2 = "Person"
+            text3 = "Access Type"
+            print(f"{text:<12}{text2:<21}{text3:<15}Choice")
             for account in self.accounts:
-                print(f"{account.username}      {account.name} [{num}]")
+                num_text = f"[{num}]"
+                print(f"{account.username:<12}{account.name:<21}{account.access:<15}{num_text:^6}")
                 num += 1
             selection = input("[D]elete (account)\n[C]hange access\n[G]o Back\n[E]xit\n")
             if selection in "GE" and len(selection) == 1:
@@ -525,9 +536,19 @@ class AdminMenu(Menu):
     def item_panel(self):
         while True:
             num: int =0
-            print("Item Name     Price    Unit       Age Restrictions")
+            text = "Item Name"
+            text2 = "Price"
+            text3 = "Unit"
+            text4 = "Age Restrictions"
+            number = 7
+            print(f"{text:<24}{text2:<7}{text3:<7}{text4:<18}Choice")
             for item in self.items:
-                print(f"{item.name}     %.2f    {item.qty}      {item.ageRestrictions} [{num}]"%item.price)
+                num_text = f"[{num}]"
+                text = "None"
+                if item.ageRestrictions == -1:
+                    print(f"{item.name:<24}${item.price:<6.2f}{item.qty:<7}{text:<18}{num_text:^6}")
+                else:
+                    print(f"{item.name:<24}${item.price:<6.2f}{item.qty:<7}{item.ageRestrictions:<18}{num_text:^6}")
                 num += 1
             selection = input("[D]elete (item)\n[A]dd (item)\n[R]estock (item ammount)\n[G]o Back\n[E]xit\n")
             if selection in "AGE" and len(selection) == 1:

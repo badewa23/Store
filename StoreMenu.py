@@ -36,6 +36,7 @@ class StoreMenu(Menu):
                         self.CONTROL.clear()
                         return
                     self.CONTROL.clear()
+                    self.reload()
                     continue
                 case "C":
                     self.CONTROL.clear()

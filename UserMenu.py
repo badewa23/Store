@@ -52,12 +52,19 @@ class UserMenu(Menu):
         while True:
             count: int = 0
             total: int = 0
-            print("Item Name    Price   Unit    Total")
+            text = "Item Name"
+            text2 = "Price"
+            text3 = "Unit"
+            text4 = "Total"
+            print(f"{text:<24}{text2:<7}{text3:<7}{text4:<10}Choice")
             for checkout_item in self.checkout_items:
-                line = checkout_item.__str__() + " [" + str(count) + "]"
+                num_text = f"[{count}]"
+                line = checkout_item.__str__() + f"{num_text:^6}"
                 print(line)
                 total += checkout_item.get_total()
                 count += 1
+            text = f"${total:.2f}"
+            print(f"Total{text:>40}")
             selection = input("[C]heckout\n[R]emove (item opt:ammount)\n[G]o Back\n[E]xit\n")
             if selection in "CGE" and len(selection) == 1:
                 match selection:
@@ -130,9 +137,13 @@ class UserMenu(Menu):
     def browse_item_panel(self) -> int:
         while True:
             count: int = 0
-            print("Item Name    Description    Price")
+            text = "Item Name"
+            text2 = "Description"
+            text3 = "Price"
+            print(f"{text:<24}{text2:<35}{text3:<7}Choice")
             for item in self.items:
-                line = item.__str__() + " [" + str(count) + "]"
+                num_text = f"[{count}]"
+                line = item.__str__() + f"{num_text:^6}"
                 print(line)
                 count += 1
             selection = input("[B]uy (item ammount)\n[G]o Back\n[E]xit\n")
